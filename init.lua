@@ -518,9 +518,10 @@ require('lazy').setup({
 
         -- elixirls = {},
         lexical = {
-          cmd = { os.getenv 'TOOLS_HOME' .. '/lexical/_build/dev/package/lexical/bin/start_lexical.sh' },
+          cmd = { os.getenv 'HOME' .. '/.local/share/nvim/mason/bin/lexical', 'server' },
           root_dir = require('lspconfig.util').root_pattern { 'mix.exs' },
         },
+
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -535,6 +536,8 @@ require('lazy').setup({
             },
           },
         },
+
+        prettierd = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -640,12 +643,60 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
+
+      vim.snippet.expand = luasnip.lsp_expand
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.snippet.active = function(filter)
+        filter = filter or {}
+        filter.direction = filter.direction or 1
+
+        if filter.direction == 1 then
+          return luasnip.expand_or_jumpable()
+        else
+          return luasnip.jumpable(filter.direction)
+        end
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.snippet.jump = function(direction)
+        if direction == 1 then
+          if luasnip.expandable() then
+            return luasnip.expand_or_jump()
+          else
+            return luasnip.jumpable(1) and luasnip.jump(1)
+          end
+        else
+          return luasnip.jumpable(-1) and luasnip.jump(-1)
+        end
+      end
+
+      vim.snippet.stop = luasnip.unlink_current
+
+      luasnip.config.set_config {
+        history = true,
+        updateevents = 'TextChanged,TextChangedI',
+        override_builtin = true,
+      }
+
+      for _, ft_path in ipairs(vim.api.nvim_get_runtime_file('lua/custom/snippets/*.lua', true)) do
+        loadfile(ft_path)()
+      end
+
+      vim.keymap.set({ 'i', 's' }, '<c-k>', function()
+        return vim.snippet.active { direction = 1 } and vim.snippet.jump(1)
+      end, { silent = true })
+
+      vim.keymap.set({ 'i', 's' }, '<c-j>', function()
+        return vim.snippet.active { direction = -1 } and vim.snippet.jump(-1)
+      end, { silent = true })
 
       cmp.setup {
         snippet = {
@@ -693,16 +744,16 @@ require('lazy').setup({
           --
           -- <c-l> will move you to the right of each of the expansion locations.
           -- <c-h> is similar, except moving you backwards.
-          ['<C-l>'] = cmp.mapping(function()
-            if luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            end
-          end, { 'i', 's' }),
-          ['<C-h>'] = cmp.mapping(function()
-            if luasnip.locally_jumpable(-1) then
-              luasnip.jump(-1)
-            end
-          end, { 'i', 's' }),
+          -- ['<C-l>'] = cmp.mapping(function()
+          --   if luasnip.expand_or_locally_jumpable() then
+          --     luasnip.expand_or_jump()
+          --   end
+          -- end, { 'i', 's' }),
+          -- ['<C-h>'] = cmp.mapping(function()
+          --   if luasnip.locally_jumpable(-1) then
+          --     luasnip.jump(-1)
+          --   end
+          -- end, { 'i', 's' }),
 
           -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -711,6 +762,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'buffer' },
         },
       }
     end,
@@ -822,6 +874,8 @@ require('lazy').setup({
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.fugitive',
+  require 'kickstart.plugins.octo',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
