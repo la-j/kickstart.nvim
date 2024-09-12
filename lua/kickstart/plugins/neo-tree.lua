@@ -56,11 +56,11 @@ return {
           modified = '~',
           renamed = 'R',
           -- Status type
-          untracked = 'UT',
-          ignored = 'I',
-          unstaged = 'US',
-          staged = 'S',
-          conflict = 'C',
+          untracked = 'Untracked',
+          ignored = 'Ignored',
+          unstaged = 'Unstaged',
+          staged = 'Staged',
+          conflict = 'Conflict',
         },
       },
       icon = {
