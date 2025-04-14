@@ -70,6 +70,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Fixes inotifywait bugs on tailwind css
+vim.opt.backupcopy = 'yes'
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -135,7 +138,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 -- Restore blinking cursor
 vim.api.nvim_create_autocmd({ 'VimLeave', 'VimSuspend' }, {
   pattern = { '*' },
-  command = 'set guicursor=a:block-blinkon500',
+  command = 'set guicursor=a:blinkwait100-blinkon100-blinkoff100',
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -484,6 +487,10 @@ require('lazy').setup({
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
+          -- Opens a popup that displays documentation about the word under your cursor
+          --  See `:help K` for why this keymap.
+          map('K', vim.lsp.buf.hover, 'Hover Documentation')
+
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
@@ -819,6 +826,7 @@ require('lazy').setup({
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
+          { name = 'copilot' },
           {
             name = 'lazydev',
             -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
@@ -897,7 +905,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'elixir', 'heex', 'eex'},
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'elixir', 'heex', 'eex' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
