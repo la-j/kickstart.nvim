@@ -199,7 +199,11 @@ return {
 
       if os.getenv 'BASE16_THEME' then
         vim.cmd.colorscheme('base16-' .. os.getenv 'BASE16_THEME')
+      elseif os.getenv 'BASE24_THEME' then
+        vim.cmd.colorscheme('base24-' .. os.getenv 'BASE24_THEME')
+      end
 
+      if os.getenv 'BASE16_THEME' or os.getenv 'BASE24_THEME' then
         vim.api.nvim_set_hl(0, 'TSStrong', { fg = nil, bg = nil, bold = true })
         vim.api.nvim_set_hl(0, 'TSEmphasis', { fg = nil, bg = nil, italic = true })
         vim.api.nvim_set_hl(0, 'TSUnderline', { fg = nil, bg = nil, underline = true })
@@ -273,6 +277,8 @@ return {
         vim.api.nvim_set_hl(0, 'TSURI', { fg = to_color(vim.g.tinted_gui0D), bg = nil, underline = true })
         vim.api.nvim_set_hl(0, 'TSVariable', { fg = to_color(vim.g.tinted_gui05), bg = nil })
         vim.api.nvim_set_hl(0, 'TSVariableBuiltin', { fg = to_color(vim.g.tinted_gui0E), bg = nil, italic = true })
+        vim.api.nvim_set_hl(0, 'TSModuleInfoGood', { fg = to_color(vim.g.tinted_gui0B), bg = nil })
+        vim.api.nvim_set_hl(0, 'TSModuleInfoBad', { fg = to_color(vim.g.tinted_gui08), bg = nil })
 
         if vim.fn.has 'nvim-0.8' == 1 then
           vim.api.nvim_set_hl(0, '@annotation', { link = 'TSAnnotation' })
@@ -424,6 +430,9 @@ return {
           vim.api.nvim_set_hl(0, '@lsp.type.typeParameter', { link = 'TSTypeDefinition' })
           vim.api.nvim_set_hl(0, '@lsp.type.variable', { link = 'TSVariable' })
         end
+
+        -- Copilot highlights
+        vim.api.nvim_set_hl(0, 'CopilotSuggestion', { fg = to_color(vim.g.tinted_gui04), bg = nil })
       end
     end,
   },
