@@ -452,23 +452,17 @@ return {
 
   -- Vibe coding
   {
-    'zbirenbaum/copilot-cmp',
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
     event = 'InsertEnter',
-    config = function()
-      require('copilot_cmp').setup {
-        fix_pairs = true,
-      }
-    end,
-    dependencies = {
-      'zbirenbaum/copilot.lua',
-      cmd = 'Copilot',
-      config = function()
-        require('copilot').setup {
-          suggestion = { enabled = false },
-          panel = { enabled = false },
-          workspace_folders = vim.split(os.getenv 'NVIM_COPILOT_WORKSPACE_FOLDERS' or '', ':'),
-        }
-      end,
+    opts = {
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+      workspace_folders = vim.split(os.getenv 'NVIM_COPILOT_WORKSPACE_FOLDERS' or '', ':'),
+      filetypes = {
+        markdown = true,
+        help = true,
+      },
     },
   },
   -- {
