@@ -455,7 +455,9 @@ return {
     'zbirenbaum/copilot-cmp',
     event = 'InsertEnter',
     config = function()
-      require('copilot_cmp').setup()
+      require('copilot_cmp').setup {
+        fix_pairs = true,
+      }
     end,
     dependencies = {
       'zbirenbaum/copilot.lua',
@@ -469,17 +471,17 @@ return {
       end,
     },
   },
-  {
-    'olimorris/codecompanion.nvim',
-    opts = {
-      --Refer to: https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
-      strategies = {
-        chat = { adapter = 'copilot' },
-        inline = { adapter = 'copilot' },
-      },
-      opts = {
-        log_level = 'DEBUG',
-      },
-    },
-  },
+  -- {
+  --   'olimorris/codecompanion.nvim',
+  --   opts = {
+  --     --Refer to: https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
+  --     strategies = {
+  --       chat = { adapter = 'copilot' },
+  --       inline = { adapter = 'copilot' },
+  --     },
+  --     opts = {
+  --       log_level = 'DEBUG',
+  --     },
+  --   },
+  -- },
 }

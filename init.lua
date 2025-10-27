@@ -574,9 +574,17 @@ require('lazy').setup({
         ts_ls = {},
 
         -- elixirls = {},
-        lexical = {
-          cmd = { os.getenv 'HOME' .. '/.local/share/nvim/mason/bin/lexical', 'server' },
-          root_dir = require('lspconfig.util').root_pattern { 'mix.exs' },
+        -- lexical = {
+        --   cmd = { os.getenv 'HOME' .. '/.local/share/nvim/mason/bin/lexical', 'server' },
+        --   root_dir = require('lspconfig.util').root_pattern { 'mix.exs' },
+        -- },
+
+        expert = {
+          cmd = { os.getenv 'HOME' .. '/.local/share/nvim/mason/bin/expert' },
+          root_dir = function(fname)
+            return require('lspconfig').util.root_pattern('mix.exs', '.git')(fname) or vim.loop.cwd()
+          end,
+          filetypes = { 'elixir', 'eelixir', 'heex' },
         },
 
         lua_ls = {
