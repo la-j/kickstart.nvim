@@ -205,22 +205,27 @@ return {
 
       if os.getenv 'BASE16_THEME' or os.getenv 'BASE24_THEME' then
         local function apply_highlight_overrides()
+          local is_light = vim.o.background == 'light'
+          local bg_for_badges = is_light and vim.g.tinted_gui07 or vim.g.tinted_gui00
+          local fg_comment = is_light and vim.g.tinted_gui03 or vim.g.tinted_gui04
+          local fg_punctuation = is_light and vim.g.tinted_gui03 or vim.g.tinted_gui04
+
           vim.api.nvim_set_hl(0, 'TSStrong', { fg = nil, bg = nil, bold = true })
           vim.api.nvim_set_hl(0, 'TSEmphasis', { fg = nil, bg = nil, italic = true })
           vim.api.nvim_set_hl(0, 'TSUnderline', { fg = nil, bg = nil, underline = true })
-          vim.api.nvim_set_hl(0, 'TSNote', { fg = to_color(vim.g.tinted_gui00), bg = to_color(vim.g.tinted_gui0B), bold = true })
-          vim.api.nvim_set_hl(0, 'TSWarning', { fg = to_color(vim.g.tinted_gui00), bg = to_color(vim.g.tinted_gui0A), bold = true })
-          vim.api.nvim_set_hl(0, 'TSDanger', { fg = to_color(vim.g.tinted_gui00), bg = to_color(vim.g.tinted_gui08), bold = true })
+          vim.api.nvim_set_hl(0, 'TSNote', { fg = to_color(bg_for_badges), bg = to_color(vim.g.tinted_gui0B), bold = true })
+          vim.api.nvim_set_hl(0, 'TSWarning', { fg = to_color(bg_for_badges), bg = to_color(vim.g.tinted_gui0A), bold = true })
+          vim.api.nvim_set_hl(0, 'TSDanger', { fg = to_color(bg_for_badges), bg = to_color(vim.g.tinted_gui08), bold = true })
           vim.api.nvim_set_hl(0, 'TSAnnotation', { fg = to_color(vim.g.tinted_gui0D), bg = nil, italic = true })
           vim.api.nvim_set_hl(0, 'TSAttribute', { fg = to_color(vim.g.tinted_gui0D), bg = nil, italic = true })
           vim.api.nvim_set_hl(0, 'TSBoolean', { fg = to_color(vim.g.tinted_gui0E), bg = nil })
           vim.api.nvim_set_hl(0, 'TSCharacter', { fg = to_color(vim.g.tinted_gui0A), bg = nil })
           vim.api.nvim_set_hl(0, 'TSCharacterSpecial', { fg = to_color(vim.g.tinted_gui0E), bg = nil })
-          vim.api.nvim_set_hl(0, 'TSComment', { fg = to_color(vim.g.tinted_gui04), bg = nil })
+          vim.api.nvim_set_hl(0, 'TSComment', { fg = to_color(fg_comment), bg = nil })
           vim.api.nvim_set_hl(0, 'TSConditional', { fg = to_color(vim.g.tinted_gui08), bg = nil })
           vim.api.nvim_set_hl(0, 'TSConstBuiltin', { fg = to_color(vim.g.tinted_gui0E), bg = nil, italic = true })
           vim.api.nvim_set_hl(0, 'TSConstMacro', { fg = to_color(vim.g.tinted_gui0E), bg = nil, italic = true })
-          vim.api.nvim_set_hl(0, 'TSConstant', { fg = to_color(vim.g.tinted_gui05), bg = nil })
+          vim.api.nvim_set_hl(0, 'TSConstant', { fg = to_color(vim.g.tinted_gui09), bg = nil })
           vim.api.nvim_set_hl(0, 'TSConstructor', { fg = to_color(vim.g.tinted_gui0B), bg = nil })
           vim.api.nvim_set_hl(0, 'TSDebug', { fg = to_color(vim.g.tinted_gui0A), bg = nil })
           vim.api.nvim_set_hl(0, 'TSDefine', { fg = to_color(vim.g.tinted_gui08), bg = nil })
@@ -252,8 +257,8 @@ return {
           vim.api.nvim_set_hl(0, 'TSParameterReference', { fg = to_color(vim.g.tinted_gui05), bg = nil })
           vim.api.nvim_set_hl(0, 'TSPreProc', { fg = to_color(vim.g.tinted_gui08), bg = nil })
           vim.api.nvim_set_hl(0, 'TSProperty', { fg = to_color(vim.g.tinted_gui09), bg = nil })
-          vim.api.nvim_set_hl(0, 'TSPunctBracket', { fg = to_color(vim.g.tinted_gui04), bg = nil })
-          vim.api.nvim_set_hl(0, 'TSPunctDelimiter', { fg = to_color(vim.g.tinted_gui04), bg = nil })
+          vim.api.nvim_set_hl(0, 'TSPunctBracket', { fg = to_color(fg_punctuation), bg = nil })
+          vim.api.nvim_set_hl(0, 'TSPunctDelimiter', { fg = to_color(fg_punctuation), bg = nil })
           vim.api.nvim_set_hl(0, 'TSPunctSpecial', { fg = to_color(vim.g.tinted_gui0A), bg = nil })
           vim.api.nvim_set_hl(0, 'TSRepeat', { fg = to_color(vim.g.tinted_gui08), bg = nil })
           vim.api.nvim_set_hl(0, 'TSStorageClass', { fg = to_color(vim.g.tinted_gui08), bg = nil })
@@ -270,7 +275,7 @@ return {
           vim.api.nvim_set_hl(0, 'TSText', { fg = to_color(vim.g.tinted_gui0B), bg = nil })
           vim.api.nvim_set_hl(0, 'TSTextReference', { fg = to_color(vim.g.tinted_gui09), bg = nil })
           vim.api.nvim_set_hl(0, 'TSTitle', { fg = to_color(vim.g.tinted_gui08), bg = nil, bold = true })
-          vim.api.nvim_set_hl(0, 'TSTodo', { fg = to_color(vim.g.tinted_gui00), bg = to_color(vim.g.tinted_gui0D), bold = true })
+          vim.api.nvim_set_hl(0, 'TSTodo', { fg = to_color(bg_for_badges), bg = to_color(vim.g.tinted_gui0D), bold = true })
           vim.api.nvim_set_hl(0, 'TSType', { fg = to_color(vim.g.tinted_gui0D), bg = nil, italic = true })
           vim.api.nvim_set_hl(0, 'TSTypeBuiltin', { fg = to_color(vim.g.tinted_gui0D), bg = nil, italic = true })
           vim.api.nvim_set_hl(0, 'TSTypeDefinition', { fg = to_color(vim.g.tinted_gui0D), bg = nil, italic = true })
